@@ -178,7 +178,7 @@ if(adzone.page=="seccion"){
   section = s[s.length-2];
 }
 
-return { "seccion": section } })();
+return { "algarabia_seccion": section } })();
 t.size_mapping=[{"device": "mobile", "adtype": "top", "min_width": 0, "sizes": [[320, 50]], "refresh": 0}, {"device": "desktop", "adtype": "top", "min_width": 728, "sizes": [[728, 90], [970, 250]], "refresh": 0}, {"device": "desktop", "adtype": "sidebar", "min_width": 0, "sizes": [[300, 250], [300, 600]], "refresh": 0}, {"device": "mobile", "adtype": "sidebar", "min_width": 0, "sizes": [[320, 50], [300, 100], [300, 250]], "refresh": 0}, {"device": "desktop", "adtype": "top2", "min_width": 0, "sizes": [[728, 90]], "refresh": 0}, {"device": "mobile", "adtype": "top2", "min_width": 0, "sizes": [[320, 50], [300, 100], [300, 250]], "refresh": 0}, {"device": "desktop", "adtype": "oop", "min_width": 0, "sizes": [[1, 1], [800, 600], [728, 90], [970, 90]], "refresh": 0}, {"device": "mobile", "adtype": "oop", "min_width": 0, "sizes": [[1, 1], [320, 480], [320, 50], [300, 50]], "refresh": 0}, {"device": "desktop", "adtype": "internote", "min_width": 0, "sizes": [[728, 90], [970, 250]], "refresh": 0}, {"device": "mobile", "adtype": "internote", "min_width": 0, "sizes": [[300, 250], [320, 50]], "refresh": 0}];
 
 (function() {  })();
