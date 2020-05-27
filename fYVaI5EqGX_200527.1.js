@@ -125,10 +125,10 @@ ad_slots.push({ div: document.body , location: "last" , id: "zocalo" , adtype: "
 !adzone.device.isMobile && ad_slots.push({ div: document.body , location: "first" , id: "lateral" , adtype: "lateral", style: "height:auto;position:fixed;right:0;z-index: 50;" });
 
 if(adzone.adsf_section == "nota" && adzone.device.isMobile) {
-  ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[3] , location: "before" , id: "inline_position_1" , adtype: "caja" });
-  ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[6] , location: "before" , id: "inline_position_2" , adtype: "caja" });
-  ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[9] , location: "before" , id: "inline_position_3" , adtype: "caja" });
-  ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[12] , location: "before" , id: "inline_position_4" , adtype: "caja" });
+  ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[3] , location: "before" , id: "inline_position_1" , adtype: "inline" });
+  ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[6] , location: "before" , id: "inline_position_2" , adtype: "inline" });
+  ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[9] , location: "before" , id: "inline_position_3" , adtype: "inline" });
+  ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[12] , location: "before" , id: "inline_position_4" , adtype: "inline" });
 }
 
 if (adzone.device.isMobile) {
