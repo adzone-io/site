@@ -14,7 +14,7 @@ t.device = {
   isDesktop: !(/Mobi/.test(navigator.userAgent))
 };
 
-t.code = 'fYVaI5EqGX.latest';
+t.code = 'fYVaI5EqGX.200528.1';
 
 t.log = window.console.log.bind(window.console);
 t.error = window.console.error.bind(window.console);
@@ -112,7 +112,7 @@ adzone.position = adzone.position || 0;
 
 var ad_slots = [];
 
-// imprimir ITT sÃ³lo cada 5 minutos
+// imprimir ITT sólo cada 5 minutos
 var last_itt=localStorage.getItem("last_itt") || 0;
 if(last_itt < ( Math.round((new Date()).getTime()/1000/1000)-5 )) {
   localStorage.setItem("last_itt", Math.round((new Date()).getTime()/1000/1000));
@@ -121,7 +121,7 @@ if(last_itt < ( Math.round((new Date()).getTime()/1000/1000)-5 )) {
 
 ad_slots.push({ div: document.body , location: "last" , id: "zocalo" , adtype: "zocalo", style: "display:none" });
 
-// el lateral estÃ¡ suspendido. Descomentar la lÃ­nea de abajo
+// el lateral está suspendido. Descomentar la línea de abajo
 !adzone.device.isMobile && ad_slots.push({ div: document.body , location: "first" , id: "lateral" , adtype: "lateral", style: "height:auto;position:fixed;right:0;z-index: 50;" });
 
 if(adzone.adsf_section == "nota" && adzone.device.isMobile) {
@@ -243,7 +243,7 @@ if(document.location.href.indexOf("collapse_empty_divs=0")>0) {
 }
 
 t.kv = (function() {  })();
-t.size_mapping=[{"device": "mobile", "adtype": "top", "min_width": 0, "sizes": [[300, 50], [300, 100], [320, 50], [320, 100]], "refresh": 120}, {"device": "desktop", "adtype": "top", "min_width": 0, "sizes": [[970, 90], [728, 90]], "refresh": 120}, {"device": "desktop", "adtype": "horizontal", "min_width": 970, "sizes": [[970, 90], [970, 250], [728, 90]], "refresh": 120}, {"device": "mobile", "adtype": "horizontal", "min_width": 0, "sizes": [[320, 50], [320, 100], [300, 50], [300, 100]], "refresh": 120}, {"device": "mobile", "adtype": "", "min_width": 0, "sizes": [[320, 50]], "refresh": 120}, {"device": "all_devices", "adtype": "caja", "min_width": 0, "sizes": [[300, 250]], "refresh": 120}, {"device": "all_devices", "adtype": "caja_grande", "min_width": 0, "sizes": [[300, 600]], "refresh": 120}, {"device": "desktop", "adtype": "itt", "min_width": 0, "sizes": [[800, 600], [1000, 480]], "refresh": 0}, {"device": "mobile", "adtype": "itt", "min_width": 0, "sizes": [[320, 480]], "refresh": 0}, {"device": "desktop", "adtype": "zocalo", "min_width": 970, "sizes": [[1, 1], [970, 90], [728, 90], [950, 50]], "refresh": 60}, {"device": "mobile", "adtype": "zocalo", "min_width": 0, "sizes": [[1, 1], [320, 50], [300, 50]], "refresh": 60}, {"device": "desktop", "adtype": "zocalo", "min_width": 0, "sizes": [[320, 50]], "refresh": 60}, {"device": "desktop", "adtype": "lateral", "min_width": 0, "sizes": [[260, 600], [260, 650], [300, 600]], "refresh": 120}, {"device": "desktop", "adtype": "inline", "min_width": 0, "sizes": [[728, 90]], "refresh": 120}, {"device": "mobile", "adtype": "inline", "min_width": 0, "sizes": [[300, 600], [300, 250], [320, 250], [300, 100], [320, 100], [320, 50], [300, 50]], "refresh": 120}, {"device": "desktop", "adtype": "zocalo", "min_width": 728, "sizes": [[728, 90], [1, 1]], "refresh": 60}];
+t.size_mapping=[{"device": "mobile", "adtype": "top", "min_width": 0, "sizes": [[300, 50], [300, 100], [320, 50], [320, 100]], "refresh": 0}, {"device": "desktop", "adtype": "top", "min_width": 0, "sizes": [[970, 90], [728, 90]], "refresh": 0}, {"device": "desktop", "adtype": "horizontal", "min_width": 970, "sizes": [[970, 90], [970, 250], [728, 90]], "refresh": 0}, {"device": "mobile", "adtype": "horizontal", "min_width": 0, "sizes": [[320, 50], [320, 100], [300, 50], [300, 100]], "refresh": 0}, {"device": "mobile", "adtype": "", "min_width": 0, "sizes": [[320, 50]], "refresh": 0}, {"device": "all_devices", "adtype": "caja", "min_width": 0, "sizes": [[300, 250]], "refresh": 0}, {"device": "all_devices", "adtype": "caja_grande", "min_width": 0, "sizes": [[300, 600]], "refresh": 0}, {"device": "desktop", "adtype": "itt", "min_width": 0, "sizes": [[800, 600], [1000, 480]], "refresh": 0}, {"device": "mobile", "adtype": "itt", "min_width": 0, "sizes": [[320, 480]], "refresh": 0}, {"device": "desktop", "adtype": "zocalo", "min_width": 970, "sizes": [[1, 1], [970, 90], [728, 90], [950, 50]], "refresh": 0}, {"device": "mobile", "adtype": "zocalo", "min_width": 0, "sizes": [[1, 1], [320, 50], [300, 50]], "refresh": 0}, {"device": "desktop", "adtype": "zocalo", "min_width": 0, "sizes": [[320, 50]], "refresh": 0}, {"device": "desktop", "adtype": "lateral", "min_width": 0, "sizes": [[260, 600], [260, 650], [300, 600]], "refresh": 0}, {"device": "desktop", "adtype": "inline", "min_width": 0, "sizes": [[728, 90]], "refresh": 0}, {"device": "mobile", "adtype": "inline", "min_width": 0, "sizes": [[300, 600], [300, 250], [320, 250], [300, 100], [320, 100], [320, 50], [300, 50]], "refresh": 0}, {"device": "desktop", "adtype": "zocalo", "min_width": 728, "sizes": [[728, 90], [1, 1]], "refresh": 0}];
 
 (function() {  })();
 
