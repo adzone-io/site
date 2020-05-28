@@ -14,7 +14,11 @@ t.device = {
   isDesktop: !(/Mobi/.test(navigator.userAgent))
 };
 
+<<<<<<< HEAD
 t.code = 'VrteSlEWbT.200526.1';
+=======
+t.code = 'VrteSlEWbT.latest';
+>>>>>>> d5746de60ab3f9e58c84b27ac4e3b9579240a305
 
 t.log = window.console.log.bind(window.console);
 t.error = window.console.error.bind(window.console);
@@ -31,7 +35,11 @@ t.styles.footer_close=`<img style='max-width:20px;max-height:20px;width:20px;hei
 t.styles.footer_open=`<span style='background-color:white'><img style='width:24px;height:24px' src="https://cdn.jsdelivr.net/gh/adzone-io/rm/icon/round_expand_less_black_48dp.png"></span>`;
 t.styles.prestitial_close=`<img style='max-width:48px;max-height:48px;width:48px;height:48px;margin-top:-34px;margin-right:-28px' src="https://cdn.jsdelivr.net/gh/adzone-io/rm@1.0.0/icon/close2.png">`;
 t.styles.push_expand=`<img style='width:24px;height:24px' src="https://cdn.jsdelivr.net/gh/adzone-io/rm@1.0.0/icon/round_arrow_downward_black_48dp.png">`;
+<<<<<<< HEAD
 t.styles.push_collapse=`<img style='width:24px;height:24px' src="https://cdn.jsdelivr.net/gh/adzone-io/rm@1.0.0/icon/round_arrow_upward_black_48dp.png">
+=======
+t.styles.push_collapse=`<img style='width:24px;height:24px' src="https://cdn.jsdelivr.net/gh/adzone-io/rm@1.0.0/icon/round_arrow_upward_black_48dp.png">
+>>>>>>> d5746de60ab3f9e58c84b27ac4e3b9579240a305
 `;
 t.styles.push_expanded_height=``;
 t.styles.push_collapsed_height=``;
@@ -558,4 +566,8 @@ if(t.auto_parse_slots=='start') {
   window.setInterval(function() {adzone.run_new()},500);
 }
 
+<<<<<<< HEAD
 })(adzone);
+=======
+})(adzone);
+>>>>>>> d5746de60ab3f9e58c84b27ac4e3b9579240a305

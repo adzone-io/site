@@ -14,11 +14,7 @@ t.device = {
   isDesktop: !(/Mobi/.test(navigator.userAgent))
 };
 
-<<<<<<< HEAD
-t.code = 'fYVaI5EqGX.200527.1';
-=======
 t.code = 'fYVaI5EqGX.latest';
->>>>>>> d5746de60ab3f9e58c84b27ac4e3b9579240a305
 
 t.log = window.console.log.bind(window.console);
 t.error = window.console.error.bind(window.console);
@@ -35,11 +31,7 @@ t.styles.footer_close=`<img style='max-width:20px;max-height:20px;width:20px;hei
 t.styles.footer_open=`<span style='background-color:white'><img style='width:24px;height:24px' src="https://cdn.jsdelivr.net/gh/adzone-io/rm/icon/round_expand_less_black_48dp.png"></span>`;
 t.styles.prestitial_close=`<img style='max-width:48px;max-height:48px;width:48px;height:48px;margin-top:-34px;margin-right:-28px' src="https://cdn.jsdelivr.net/gh/adzone-io/rm@1.0.0/icon/close2.png">`;
 t.styles.push_expand=`<img style='width:24px;height:24px' src="https://cdn.jsdelivr.net/gh/adzone-io/rm@1.0.0/icon/round_arrow_downward_black_48dp.png">`;
-<<<<<<< HEAD
 t.styles.push_collapse=`<img style='width:24px;height:24px' src="https://cdn.jsdelivr.net/gh/adzone-io/rm@1.0.0/icon/round_arrow_upward_black_48dp.png">
-=======
-t.styles.push_collapse=`<img style='width:24px;height:24px' src="https://cdn.jsdelivr.net/gh/adzone-io/rm@1.0.0/icon/round_arrow_upward_black_48dp.png">
->>>>>>> d5746de60ab3f9e58c84b27ac4e3b9579240a305
 `;
 t.styles.push_expanded_height=``;
 t.styles.push_collapsed_height=``;
@@ -120,11 +112,7 @@ adzone.position = adzone.position || 0;
 
 var ad_slots = [];
 
-<<<<<<< HEAD
-// imprimir ITT sólo cada 5 minutos
-=======
 // imprimir ITT sÃ³lo cada 5 minutos
->>>>>>> d5746de60ab3f9e58c84b27ac4e3b9579240a305
 var last_itt=localStorage.getItem("last_itt") || 0;
 if(last_itt < ( Math.round((new Date()).getTime()/1000/1000)-5 )) {
   localStorage.setItem("last_itt", Math.round((new Date()).getTime()/1000/1000));
@@ -133,16 +121,6 @@ if(last_itt < ( Math.round((new Date()).getTime()/1000/1000)-5 )) {
 
 ad_slots.push({ div: document.body , location: "last" , id: "zocalo" , adtype: "zocalo", style: "display:none" });
 
-<<<<<<< HEAD
-// el lateral está suspendido. Descomentar la línea de abajo
-!adzone.device.isMobile && ad_slots.push({ div: document.body , location: "first" , id: "lateral" , adtype: "lateral", style: "height:auto;position:fixed;right:0;z-index: 50;" });
-
-if(adzone.adsf_section == "nota" && adzone.device.isMobile) {
-  ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[3] , location: "before" , id: "inline_position_1" , adtype: "caja" });
-  ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[6] , location: "before" , id: "inline_position_2" , adtype: "caja" });
-  ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[9] , location: "before" , id: "inline_position_3" , adtype: "caja" });
-  ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[12] , location: "before" , id: "inline_position_4" , adtype: "caja" });
-=======
 // el lateral estÃ¡ suspendido. Descomentar la lÃ­nea de abajo
 !adzone.device.isMobile && ad_slots.push({ div: document.body , location: "first" , id: "lateral" , adtype: "lateral", style: "height:auto;position:fixed;right:0;z-index: 50;" });
 
@@ -151,7 +129,6 @@ if(adzone.adsf_section == "nota" && adzone.device.isMobile) {
   ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[6] , location: "before" , id: "inline_position_2" , adtype: "inline" });
   ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[9] , location: "before" , id: "inline_position_3" , adtype: "inline" });
   ad_slots.push({ div: document.querySelectorAll("article .cuerpo > p")[12] , location: "before" , id: "inline_position_4" , adtype: "inline" });
->>>>>>> d5746de60ab3f9e58c84b27ac4e3b9579240a305
 }
 
 if (adzone.device.isMobile) {
@@ -626,8 +603,4 @@ if(t.auto_parse_slots=='start') {
   window.setInterval(function() {adzone.run_new()},500);
 }
 
-<<<<<<< HEAD
 })(adzone);
-=======
-})(adzone);
->>>>>>> d5746de60ab3f9e58c84b27ac4e3b9579240a305
