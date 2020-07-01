@@ -8,8 +8,8 @@ googletag.cmd = googletag.cmd||[];
 
 (function(t) {
 t.code = 'QIJROOCUVO.200701.2';
-t.version = '200701.2';
-t.version_datetime = '2020-Jul-01 11:49:48';
+t.version = '200701.2#1014';
+t.version_datetime = '2020-Jul-01 12:55:11';
 
 if(t.cancel_all_ads_in_page) {
   console.log("Adzone: No ads in page.");
@@ -190,13 +190,8 @@ if(pageinfo.type == "interior")
 });
 t.forced_slots = [];
 t.forced_slots.push({s: `flotante2`, f: `108`, t: `500`, p: `{}`, i:`{}` }); 
-t.auto_parse_slots = 'auto';
+t.auto_parse_slots = 'start';
 
-var gads = document.createElement('script');
-gads.async = true;
-gads.type = 'text/javascript';
-gads.src = 'https://www.googletagservices.com/tag/js/gpt.js?1';
-document.head.appendChild(gads);
 
 
 t.network_code = 134471228;
@@ -222,7 +217,7 @@ if(document.location.href.indexOf("enable_lazy_loading=0")>0) {
   t.enable_lazy_loading=false;
 }
 t.lazy_loading_params = false;
-t.collapse_empty_divs = false;
+t.collapse_empty_divs = true;
 if(document.location.href.indexOf("collapse_empty_divs=1")>0) {
   t.collapse_empty_divs=true;
 }
@@ -232,16 +227,15 @@ if(document.location.href.indexOf("collapse_empty_divs=0")>0) {
 
 t.kv = (function() { var kv = {};
 kv.seccion = (pageinfo.section||"n/a").toLowerCase().replace(/[^a-z]/gi, '');
-pageinfo && pageinfo.news && (kv.idnota = (pageinfo.news||"").toLowerCase().replace(/[^a-z]/gi, ''));
+pageinfo && pageinfo.news && (kv.idnota = (pageinfo.news||""));
 
-return { kv }; })();
-t.size_mapping=[{"device": "desktop", "adtype": "header", "min_width": 0, "sizes": [[240, 90]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "horizontal", "min_width": 1000, "sizes": [[970, 90], [970, 250], [728, 90]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "horizontal", "min_width": 800, "sizes": [[728, 90], [300, 250], [320, 250], [320, 100]], "refresh": 0, "interval": 0}, {"device": "all_devices", "adtype": "horizontal", "min_width": 0, "sizes": [[300, 250], [300, 100]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "caja", "min_width": 0, "sizes": [[300, 250], [300, 300]], "refresh": 0, "interval": 0}, {"device": "mobile", "adtype": "caja", "min_width": 0, "sizes": [[300, 250], [300, 100]], "refresh": 0, "interval": 0}, {"device": "all_devices", "adtype": "caja_grande", "min_width": 0, "sizes": [[300, 600], [300, 250], [300, 630]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "flotante1", "min_width": 800, "sizes": [[1, 1], [800, 600], [1000, 600], [600, 500]], "refresh": 0, "interval": 30}, {"device": "desktop", "adtype": "flotante2", "min_width": 728, "sizes": [[1, 1], [728, 90], [970, 90], [970, 251]], "refresh": 0, "interval": 0}, {"device": "mobile", "adtype": "flotante1", "min_width": 0, "sizes": [[320, 480]], "refresh": 0, "interval": 30}, {"device": "mobile", "adtype": "flotante2", "min_width": 0, "sizes": [[300, 50], [320, 50]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "flotante3", "min_width": 0, "sizes": [[1, 1]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "horizontal_nota", "min_width": 0, "sizes": [[728, 90], [300, 250], [320, 250]], "refresh": 0, "interval": 0}, {"device": "mobile", "adtype": "horizontal_nota", "min_width": 0, "sizes": [[300, 250], [300, 100]], "refresh": 0, "interval": 0}, {"device": "mobile", "adtype": "flotante1", "min_width": 480, "sizes": [[480, 320]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "lateral", "min_width": 1300, "sizes": [[250, 600]], "refresh": 0, "interval": 0}];
+return kv; })();
+t.size_mapping=[{"device": "desktop", "adtype": "header", "min_width": 0, "sizes": [[240, 90]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "horizontal", "min_width": 1000, "sizes": [[970, 90], [970, 250], [728, 90]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "horizontal", "min_width": 800, "sizes": [[728, 90], [300, 250], [320, 250], [320, 100]], "refresh": 0, "interval": 0}, {"device": "all_devices", "adtype": "horizontal", "min_width": 0, "sizes": [[300, 250], [300, 100]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "caja", "min_width": 0, "sizes": [[300, 250], [300, 300]], "refresh": 0, "interval": 0}, {"device": "mobile", "adtype": "caja", "min_width": 0, "sizes": [[300, 250], [300, 100]], "refresh": 0, "interval": 0}, {"device": "all_devices", "adtype": "caja_grande", "min_width": 0, "sizes": [[300, 600], [300, 250], [300, 630]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "flotante1", "min_width": 800, "sizes": [[1, 1], [800, 600], [1000, 600], [600, 500]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "flotante2", "min_width": 728, "sizes": [[1, 1], [728, 90], [970, 90], [970, 251]], "refresh": 0, "interval": 0}, {"device": "mobile", "adtype": "flotante1", "min_width": 0, "sizes": [[320, 480]], "refresh": 0, "interval": 0}, {"device": "mobile", "adtype": "flotante2", "min_width": 0, "sizes": [[300, 50], [320, 50]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "flotante3", "min_width": 0, "sizes": [[1, 1]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "horizontal_nota", "min_width": 0, "sizes": [[728, 90], [300, 250], [320, 250]], "refresh": 0, "interval": 0}, {"device": "mobile", "adtype": "horizontal_nota", "min_width": 0, "sizes": [[300, 250], [300, 100]], "refresh": 0, "interval": 0}, {"device": "mobile", "adtype": "flotante1", "min_width": 480, "sizes": [[480, 320]], "refresh": 0, "interval": 0}, {"device": "desktop", "adtype": "lateral", "min_width": 1300, "sizes": [[250, 600]], "refresh": 0, "interval": 0}];
 
 (function() {  })();
 (function() { 
 // extra slots
-  var ad_slots = []; // count: 1
-(true) && ad_slots.push({ div_txt: `document.body`, div:  document.body , location: 'first' , id: 'flotante1' , adtype: 'flotante1', floating: false, css: '', class: '' });
+  var ad_slots = []; // count: 0
 adzone.create_slots(ad_slots);ad_slots = []; 
 })();
 
@@ -491,7 +485,6 @@ t.init_adstest = function() {
 }
 t.set_page_kv = function(){
   t.init_adstest();
-  debugger;
   adzone.kv && Object.keys(adzone.kv).forEach(function(k, index) {
     var v = adzone.kv[k];
     googletag.pubads().setTargeting(k, v);
