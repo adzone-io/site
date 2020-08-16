@@ -1,8 +1,8 @@
 (function(t) {
 
 t.code = '1_test1';
-t.version = '3';
-t.version_datetime = '2020-Aug-16 18:49:41';
+t.version = '4';
+t.version_datetime = '2020-Aug-16 18:56:31';
 
 t.start_time = new Date().getTime();
 t.ad_events=[];
