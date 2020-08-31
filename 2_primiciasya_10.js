@@ -32,28 +32,21 @@ if(adzone.use_epl && document.location.href.indexOf("epl_hide=1")<0){
 t.code = '2_primiciasya';
 t.version = '10';
 t.supertag = true;
-if(t.version.substring(1,10)!="--DRAFT--") {
-  if(localStorage.getItem("adzone-draft")) {
-    var s = document.createElement("script");
-    s.src = "https://us-east-1.linodeobjects.com/ad.s-adzone.com/config/"+t.code+"_draft.js";
-    document.head.appendChild(s);
-    console.log("** Adzone DRAFT version **");
-    return;
-  }
-} else {
-  window.setTimeout(function(){
-    var d = document.createElement("div");
-    d.style.cssText="position:fixed !important;bottom:0 !important;left:0 !important;height:24px !important;line-height:24px !important;border-radius:3px !important;width:120px !important;font-family:Arial !important;font-size:14px !important;background-color:#ff6f00 !important;color:white !important; font-weight:bold !important;text-align:center !important";
-    d.innerHTML = "Adzone Draft"
-    document.body.appendChild(d);
-  },1000);
-  t.is_draft = true;
+
+
+if(localStorage && localStorage.getItem && (localStorage.getItem("adzone-draft")==1)) {
+  var s = document.createElement("script");
+  s.src = "https://us-east-1.linodeobjects.com/ad.s-adzone.com/config/"+t.code+"_draft.js";
+  document.head.appendChild(s);
+  console.log("** Adzone DRAFT version **");
+  return;
 }
+
 
 if(t.initialized) { return; }
 t.initialized = true;
 
-t.version_datetime = '2020-Aug-16 22:27:48';
+t.version_datetime = '2020-Aug-31 02:01:59';
 
 if(t.cancel_all_ads_in_page) {
   console.error("Adzone: No ads in page.");
@@ -64,23 +57,21 @@ if(t.cancel_all_ads_in_page) {
 t.position = t.position || 0;
 
 t.device = {
-  isMobile: (/Mobi/.test(navigator.userAgent)),
+  isMobile: (/Mobi|Android/i.test(navigator.userAgent)),
   isTablet: (screen.width < 800 || screen.height < 800),
-  isDesktop: !(/Mobi/.test(navigator.userAgent))
+  isDesktop: !(/Mobi|Android/i.test(navigator.userAgent))
 };
 
-try {
-  t.log = window.console.log.bind(window.console);
-  t.error = window.console.error.bind(window.console);
-} catch(e) {
-  t.log = function() {};
-  t.error = function() {};
-}
 
-t.lp = function() {
-  var time = (new Date().getTime() - t.start_time)/1000;
-  return "Adzone "+time+"s: ";
+t.log_history=t.log_history||[];
+t.l = {
+  save: function(type, data){ var time = (new Date().getTime() - t.start_time)/1000; t.log_history.push({time:time, data:data}); adzone.version.indexOf("DRAFT")>=0&&console.log("ADZONE:" + time, type, data); },
+  info: function(p1, p2, p3, p4, p5) { var data=[]; p1&&data.push(p1); p2&&data.push(p2); p3&&data.push(p3); p4&&data.push(p4); p5&&data.push(p5); t.l.save("info", data); },
+  alert: function(p1, p2, p3, p4, p5) { var data=[]; p1&&data.push(p1); p2&&data.push(p2); p3&&data.push(p3); p4&&data.push(p4); p5&&data.push(p5); t.l.save("alert", data); },
+  error: function(p1, p2, p3, p4, p5) { var data=[]; p1&&data.push(p1); p2&&data.push(p2); p3&&data.push(p3); p4&&data.push(p4); p5&&data.push(p5); t.l.save("error", data); }
 }
+t.log = function(p1, p2, p3, p4, p5) { var data=[]; p1&&data.push(p1); p2&&data.push(p2); p3&&data.push(p3); p4&&data.push(p4); p5&&data.push(p5); t.l.save("legacy", data); }
+
 
 t.styles = t.styles || {};
 
@@ -162,8 +153,10 @@ t.create_slots2 = function() {
         d.id = slot.id;
         d.dataset.adtype = slot.adtype;
         slot.floating && (d.style.height="0");
-        d.style.overflow="hidden";
+        
         slot.style && (d.style.cssText = slot.style);
+        slot.css &&  (d.style.cssText = slot.css);
+
         slot.class && (d.className = slot.class);
         slot.floating && (d.style.display = "none");
         if(slot.location == "after") {
@@ -195,7 +188,7 @@ t.create_slots2 = function() {
           anchor.appendChild(d);
         }
       } else {
-        t.log("** ERROR COULD NOT INSERT - WRONG SLOT ID OR ADTYPE ** SLOT:", slot);
+        t.l.error("** ERROR COULD NOT INSERT - WRONG SLOT ID OR ADTYPE ** SLOT:", slot);
       }
     } else {
       if(!t.count_create_slot_tries[slot.id]) {
@@ -205,15 +198,14 @@ t.create_slots2 = function() {
         t.count_create_slot_tries[slot.id]++;
         t.pending_create_ad_slots.push(slot);
         window.setTimeout(function() { t.create_slots2(); },1000);
-        t.log("** No place to insert slot, retry #" + t.count_create_slot_tries[slot.id]);
       } else {
-        t.log("** ERROR no place to insert slot:", slot);
+        t.l.error("** no place to insert slot: " + slot.id);
       }
     }
   }
 };
 
-t.get_page_path = function() { return  "/" };
+t.get_page_path = function() { return "/" };
 t.page_path = t.get_page_path();
 var naveggCallback = function(){
   try {
@@ -355,6 +347,65 @@ adzone.slotRenderedCallback["www.primiciasya.com.py/Home/HomeEvent_260x650"] = m
 adzone.slotRenderedCallback["www.primiciasya.com/Notas/HomeEvent_260x650"] = manageResidual;
 adzone.slotRenderedCallback["www.primiciasya.com.py/Notas/HomeEvent_260x650"] = manageResidual;
 
+/* Special ads */
+
+var adzone_special = {}
+adzone_special.now = Math.round(new Date().getTime() / 1000 / 60);
+adzone_special.interval = 30; // minutes
+adzone_special.run = false;
+
+function adzoneSpecial(){
+    console.log("ADZONE - EXECUTE ADZONE SPECIAL");
+    if(localStorage && localStorage.getItem && localStorage.getItem("adzone_special-run")) {
+      if(localStorage.getItem("adzone_special-run") <= adzone_special.now - adzone_special.interval) {
+        //corre ok
+        localStorage.setItem("adzone_special-run", adzone_special.now);
+        adzone_special.run = true;
+      } else{
+        adzone_special.run = false;
+        console.log("No paso el tiempo correcto para mostrar la creatividad");
+        let divCoverall = document.getElementById('cover-all');
+        console.log("document.getElementById('cover-all') : " + divCoverall);
+        if (divCoverall !== null)
+            document.getElementById('cover-all').style.display="none";
+      }
+    } else {
+      localStorage.setItem("adzone_special-run", adzone_special.now);
+      adzone_special.run = true;
+    }
+    
+    
+    if(adzone_special && adzone_special.run) {
+      // frenar los ads  
+      console.log("EN ADZONE adzone_special.run: .ad-slot -> " + document.querySelectorAll(".ad-slot").length );
+      
+      var d = document.querySelectorAll(".ad-slot");
+      for(var i=0; i< d.length; i++) {
+        d[i].classList.remove("ad-slot");
+        d[i].classList.add("ad-slot2");
+      }
+      
+      // cargar un nuevo script
+      var s = document.createElement("script");
+      s.src="https://static.americadigital.com.ar/comercial/fibra/fibra.js?"+ Math.random();
+      document.head.appendChild(s);
+    } else if (adzone_special){
+        let divCoverall = document.getElementById('cover-all');
+        console.log("ADZONE - Hide Cover-all: " + divCoverall);
+        if (divCoverall !== null)
+            document.getElementById('cover-all').style.display="none";
+    }
+    
+    
+    
+    
+}
+adzoneSpecial();
+//Set for Transition
+adzone_special.exec = adzoneSpecial;
+window.adzone_special = adzone_special;
+
+
 t.forced_slots = [];
 t.forced_slots.push({s: `zocalo`, f: `108`, t: `1000`, p: `{}`, i:`{}` });
 t.forced_slots.push({s: `itt`, f: `103`, t: `10`, p: `{}`, i:`{}` }); 
@@ -402,12 +453,16 @@ if(document.location.href.indexOf("collapse_empty_divs=0")>0) {
 t.kv = (function() { var section = "";
 try { section=document.location.href.split("/")[2] } catch(e) {}
 return { key1:"value1", key2:["1","2","3","4"], section:section }; })();
-t.size_mapping=[{"device": "desktop", "sizes": [[300, 600], [300, 250]], "adtype": "bigbox", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[300, 250]], "adtype": "box", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[300, 600]], "adtype": "box600", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[728, 90], [950, 50], [950, 200], [950, 250], [970, 90], [970, 250], "[970", "250]]"], "adtype": "firstpush", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[260, 650], [260, 600]], "adtype": "floating", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[1000, 541], [1000, 481]], "adtype": "flotante", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[1000, 541], [1000, 481]], "adtype": "flotante", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": ["fluid", [300, 250]], "adtype": "fluid", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[1, 1], [1000, 480], [1000, 540]], "adtype": "fullcontent", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[1000, 480], [1000, 540]], "adtype": "itt", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[728, 90], [950, 50], [950, 200], [950, 250], [970, 90], [970, 250], "[970", "250]]"], "adtype": "push", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[950, 50], [970, 90]], "adtype": "topbanner", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[728, 91], [728, 90], [950, 90], [950, 50], [1, 1]], "adtype": "zocalo", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[1, 1]], "adtype": "onebyone", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 250], [300, 100], [300, 50], [300, 600]], "adtype": "bigbox", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 250]], "adtype": "box", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 250]], "adtype": "box600", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 100], [320, 50]], "adtype": "firstpush", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[320, 481]], "adtype": "flotante", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[320, 481]], "adtype": "flotante", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": ["fluid", [300, 250]], "adtype": "fluid", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[1, 1], [320, 480]], "adtype": "fullcontent", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[1, 1], [480, 320]], "adtype": "fullcontent", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[1000, 480], [1000, 540]], "adtype": "itt", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[320, 480]], "adtype": "itt", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[480, 320]], "adtype": "itt", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[1, 1]], "adtype": "onebyone", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 250], [300, 100], [320, 50], [320, 100]], "adtype": "push", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 50], [320, 50]], "adtype": "topbanner", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 100], [320, 50]], "adtype": "underHeader", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 51], [300, 50], [320, 51], [320, 50], [1, 1]], "adtype": "zocalo", "min_width": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}];
+t.size_mapping=[{"device": "desktop", "sizes": [[300, 600], [300, 250]], "adtype": "bigbox", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[300, 250]], "adtype": "box", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[300, 600]], "adtype": "box600", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[728, 90], [950, 50], [950, 200], [950, 250], [970, 90], [970, 250], "[970", "250]]"], "adtype": "firstpush", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[260, 650], [260, 600]], "adtype": "floating", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[1000, 541], [1000, 481]], "adtype": "flotante", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[1000, 541], [1000, 481]], "adtype": "flotante", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": ["fluid", [300, 250]], "adtype": "fluid", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[1, 1], [1000, 480], [1000, 540]], "adtype": "fullcontent", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[1000, 480], [1000, 540]], "adtype": "itt", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[728, 90], [950, 50], [950, 200], [950, 250], [970, 90], [970, 250], "[970", "250]]"], "adtype": "push", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[950, 50], [970, 90]], "adtype": "topbanner", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[728, 91], [728, 90], [950, 90], [950, 50], [1, 1]], "adtype": "zocalo", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "desktop", "sizes": [[1, 1]], "adtype": "onebyone", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 250], [300, 100], [300, 50], [300, 600]], "adtype": "bigbox", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 250]], "adtype": "box", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 250]], "adtype": "box600", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 100], [320, 50]], "adtype": "firstpush", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[320, 481]], "adtype": "flotante", "minwidth": 320, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[320, 481]], "adtype": "flotante", "minwidth": 320, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": ["fluid", [300, 250]], "adtype": "fluid", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[1, 1], [320, 480]], "adtype": "fullcontent", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[1, 1], [480, 320]], "adtype": "fullcontent", "minwidth": 480, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[1000, 480], [1000, 540]], "adtype": "itt", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[320, 480]], "adtype": "itt", "minwidth": 320, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[480, 320]], "adtype": "itt", "minwidth": 480, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[1, 1]], "adtype": "onebyone", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 250], [300, 100], [320, 50], [320, 100]], "adtype": "push", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 50], [320, 50]], "adtype": "topbanner", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 100], [320, 50]], "adtype": "underHeader", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}, {"device": "mobile", "sizes": [[300, 51], [300, 50], [320, 51], [320, 50], [1, 1]], "adtype": "zocalo", "minwidth": 0, "refresh": 0, "adx_refresh": 0, "interval": 0}];
 
 (function() {  })();
 (function() { 
 // extra slots
-   
+  
+  var ad_slots = [];
+
+  ad_slots.length>0 && t.create_slots(ad_slots);
+ 
 })();
 
 t.run = function(p){
@@ -431,7 +486,7 @@ t.run = function(p){
 } //t.run
 
 t.refresh = function() {
-  adzone.log(adzone.lp(), "refresh");
+  t.l.info("refresh called");
   t.is_refresh = true;
   adzone.header_push_parent && (adzone.header_push_parent.style.display="none");
   googletag.cmd.push(function() {
@@ -447,7 +502,7 @@ t.run_divs = function(div_id_list) {
   if(t.run_divs_running) { return; } 
   t.run_divs_running=true;
 
-  adzone.log(adzone.lp(), "run_divs", (!div_id_list||div_id_list.length<1?"(searching)":div_id_list));
+  t.l.info("run_divs", (!div_id_list||div_id_list.length<1?"(searching)":div_id_list));
   var prepare=[];
   Object.keys(div_id_list).forEach(function(c, index) {
     var div_id=div_id_list[c];
@@ -457,8 +512,7 @@ t.run_divs = function(div_id_list) {
 
     Object.keys(prepare).forEach(function(d, index2) {
       if(prepare[d]==div_id) {
-        var txt = "%c** ERROR ** INCORRECT AD TAGS: REPEATED DIV ID ** " + div_id + " **"
-        console.log(txt, "background: #eee; color: red; font-weight:bold;font-size:14px");
+        t.l.error("** ERROR ** INCORRECT AD TAGS: REPEATED DIV ID ** " + div_id + " **");
         prepare.splice(d, index2);
         return;
       }
@@ -489,7 +543,7 @@ t.run_divs = function(div_id_list) {
       if(size_details==[]) { return; }
       t.cs[div_id].sizes = size_details["sizes"];
       if(t.cs[div_id].sizes.length<1) {
-        adzone.log("Slot "+div_id+" was defined, but it has no size. It will be ignored.");
+        t.l.alert("Slot "+div_id+" was defined, but it has no size. It will be ignored.");
         return;
       }
       var refresh = 0;
@@ -508,7 +562,7 @@ t.run_divs = function(div_id_list) {
       if(size_details["interval"]>0 && window.sessionStorage) {
         var last_time = window.sessionStorage.getItem("adzone_interval_"+div_id)*1||0; 
         if(time_now < last_time + size_details["interval"] ) {
-          adzone.log("Will not print "+div_id+ " until next " + (last_time + size_details["interval"]-time_now) +" minutes. Remove with: sessionStorage.removeItem('adzone_interval_"+div_id+"')");
+          t.l.info("Will not print "+div_id+ " until next " + (last_time + size_details["interval"]-time_now) +" minutes. Remove with: sessionStorage.removeItem('adzone_interval_"+div_id+"')");
           return;
         }
       }
@@ -547,7 +601,7 @@ t.run_divs = function(div_id_list) {
           t.cs[div_id].slot=googletag.defineSlot(path, t.cs[div_id].sizes, div_id).addService(googletag.pubads());
         }
       } catch(e) {
-        adzone.log(adzone.lp(), "Revisar defineSlot ", div_id);
+        t.l.error("Error in definsSlot ", div_id);
       }
       
       try{
@@ -582,7 +636,7 @@ t.run_divs = function(div_id_list) {
     }
     googletag.enableServices();
     Object.keys(prepare).forEach(function(c, index) {
-      if(t.cs[prepare[c]].sizes==[]) { return; }
+      if(t.cs[prepare[c]].sizes.length<1) { return; }
 
 
       if(t.use_epl && t.is_epl_slot(prepare[c])) {      
@@ -618,13 +672,13 @@ t.schedule_refresh = function(e, seconds, reason) {
     googletag.destroySlots([e.slot]); 
     adzone.run_divs([e.slot.getSlotElementId()]);
   }, parseInt(seconds) * 1000);
-  adzone.log(adzone.lp(), "Will refresh " + e.slot.getSlotElementId() + " in " + seconds + " seconds. ("+reason+")");
+  t.l.info("Will refresh " + e.slot.getSlotElementId() + " in " + seconds + " seconds. ("+reason+")");
 }
 t.do_refresh_slots = function() {
   var s=t.refresh_slots;
   t.refresh_slots=[];
   Object.keys(s).forEach(function(c, index) {
-    t.log(t.lp(), "Manual Refresh: ", s[c]);
+    t.l.info("Manual Refresh: ", s[c]);
     googletag.pubads().refresh([s[c]], {changeCorrelator: false});
   });
 }
@@ -703,7 +757,7 @@ t.run_new = function() {
 
   t.run_new_count++;
   if(t.run_new_count%120==0) {
-    t.log(t.lp(), "Seeking slots, "+(t.run_new_count/120)+" min. since start");
+    t.l.info("Seeking slots, "+(t.run_new_count/120)+" min. since start");
   }
 
   t.page_path = t.get_page_path();
@@ -712,6 +766,7 @@ t.run_new = function() {
   
   Object.keys(divs).forEach(function(c, index) {
     if(divs[c].id) { 
+      adzone.slot_parse_callback && adzone.slot_parse_callback(divs[c]);
       var new_id = divs[c].id;
       try { 
         if(!(divs[c].dataset.adzonerun) && document.querySelectorAll("#"+new_id).length>1) {
@@ -752,7 +807,7 @@ t.new_slot = function(div_id) {
 }
 
 t.get_size_details = function(div_id) {
-  var min_width=0;
+  var minwidth=0;
   var adtype = t.cs[div_id].adtype;
   var sizes=[];
   var refresh = 0;
@@ -760,10 +815,10 @@ t.get_size_details = function(div_id) {
   var adx_refresh = 0;
   Object.keys(t.size_mapping).forEach(function(c, index) {
     var k = t.size_mapping[c];
-    k.min_width=k.min_width||0;
+    k.minwidth=k.minwidth||0;
     if(k.device.indexOf("all_devices")>=0 || (t.device.isMobile && k.device.indexOf("mobile")>=0) || (t.device.isDesktop && k.device.indexOf("desktop")>=0)) {
-      if((adtype.toLowerCase()==t.replace_all(k.adtype.toLowerCase(),"_",".") || adtype.toLowerCase()==t.replace_all(k.adtype.toLowerCase(),"_",".") || adtype.toLowerCase()==k.adtype.toLowerCase()) && k.min_width>=min_width && k.min_width<=window.innerWidth) {
-        min_width = k.min_width;
+      if((adtype.toLowerCase()==t.replace_all(k.adtype.toLowerCase(),"_",".") || adtype.toLowerCase()==t.replace_all(k.adtype.toLowerCase(),"_",".") || adtype.toLowerCase()==k.adtype.toLowerCase()) && k.minwidth>=minwidth && k.minwidth<=window.innerWidth) {
+        minwidth = k.minwidth;
         sizes = k.sizes;
         refresh = k.refresh*1||0;
         adx_refresh = k.adx_refresh||0;
@@ -794,7 +849,7 @@ t.slot_rendered = function(e) {
   t.ad_events.push(e);
   var div_id=e.slot.getSlotElementId();
   if(!(div_id in t.cs)) {
-    adzone.log("** Error while rendering " + div_id, e);
+    t.l.error("** Error while rendering " + div_id, e);
     return;
   }
   var event_data={
@@ -816,19 +871,14 @@ t.slot_rendered = function(e) {
   try{
     t.slotRenderedCallback[div_id]&&t.slotRenderedCallback[div_id](e);
   } catch(e) { 
-    var txt = "%c** ERROR IN adzone.slotRenderedCallback('" + div_id + "')"
-    console.log(txt, "background: #eee; color: red; font-weight:bold;font-size:14px");
-    console.log(e);
+    t.l.error("** ERROR IN adzone.slotRenderedCallback('" + div_id + "'");
   }
   try{
     t.slotRenderedCallbackAll&&t.slotRenderedCallbackAll(e);
   } catch(e) { 
-    var txt = "%c** ERROR IN adzone.slotRenderedCallbackAll('" + div_id + "')"
-    console.log(txt, "background: #eee; color: red; font-weight:bold;font-size:14px");
-    console.log(e);
+    t.l.error("** ERROR IN adzone.slotRenderedCallbackAll('" + div_id + "'");
   }
 };
-
 
 if(t.auto_parse_slots=='start') {
   adzone.run_new_interval = window.setInterval(function() {adzone.run_new();},500);
